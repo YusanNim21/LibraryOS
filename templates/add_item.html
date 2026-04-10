@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Add New Item | LibraryOS</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body class="bg-light">
+<div class="container mt-5" style="max-width: 600px;">
+    <h2>Add New Library Item</h2>
+    
+    <form method="POST" class="card p-4 shadow-sm mt-3">
+        <div class="mb-3">
+            <label>Item Type</label>
+            <select name="item_type" id="itemTypeSelect" class="form-select" required>
+                <option value="Book" selected>Book</option>
+                <option value="Magazine">Magazine</option>
+                <option value="CD">CD</option>
+                <option value="DVD">DVD</option>
+            </select>
+        </div>
+
+        <div class="mb-3"><label>Item ID</label><input type="text" name="item_id" class="form-control" required></div>
+        <div class="mb-3"><label>Title</label><input type="text" name="title" class="form-control" required></div>
+        <div class="mb-3"><label>Subject</label><input type="text" name="subject" class="form-control" required></div>
+        
+        <div class="row">
+            <div class="col"><label>Price (LKR)</label><input type="number" step="0.01" name="rental_price" class="form-control" required></div>
+            <div class="col"><label>Copies</label><input type="number" name="copies" class="form-control" required></div>
+        </div>
+
+        <hr class="my-4">
+        
+        <div id="book-fields" class="dynamic-section">
+            <h6 class="text-primary mb-3">Book Details</h6>
+            <div class="mb-3"><label>Author</label><input type="text" name="author" class="form-control"></div>
+            <div class="mb-3">
+                <label class="form-label d-block text-muted">Format</label>
+                <div class="form-check form-check-inline">
+                    <input class="form-check-input" type="radio" name="book_format" id="formatHardcover" value="Hardcover" checked>
+                    <label class="form-check-label" for="formatHardcover">Hardcover</label>
+                </div>
+                <div class="form-check form-check-inline">
+                    <input class="form-check-input" type="radio" name="book_format" id="formatPaperback" value="Paperback">
+                    <label class="form-check-label" for="formatPaperback">Paperback</label>
+                </div>
+            </div>
+        </div>
+
+        <div id="magazine-fields" class="dynamic-section" style="display: none;">
+            <h6 class="text-warning mb-3">Magazine Details</h6>
+            <div class="mb-3">
+                <label class="form-label d-block text-muted">Magazine Print</label>
+                <div class="form-check form-check-inline">
+                    <input class="form-check-input" type="radio" name="color" id="colorYes" value="Full Color" checked>
+                    <label class="form-check-label" for="colorYes">Full Color</label>
+                </div>
+                <div class="form-check form-check-inline">
+                    <input class="form-check-input" type="radio" name="color" id="colorNo" value="Black & White">
+                    <label class="form-check-label" for="colorNo">Black & White</label>
+                </div>
+            </div>
+        </div>
+
+        <div id="media-fields" class="dynamic-section" style="display: none;">
+            <h6 class="text-info mb-3">Media Details</h6>
+            <div class="mb-3"><label>Release Year</label><input type="number" name="release_year" class="form-control"></div>
+        </div>
+
+        <button type="submit" class="btn btn-primary mt-4">Save Item</button>
+        <a href="{{ url_for('index') }}" class="btn btn-secondary mt-4 ms-2">Cancel</a>
+    </form>
+</div>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const typeSelect = document.getElementById('itemTypeSelect');
+        const bookFields = document.getElementById('book-fields');
+        const magazineFields = document.getElementById('magazine-fields');
+        const mediaFields = document.getElementById('media-fields');
+
+        function updateFields() {
+            bookFields.style.display = 'none';
+            magazineFields.style.display = 'none';
+            mediaFields.style.display = 'none';
+
+            const selectedType = typeSelect.value;
+            if (selectedType === 'Book') {
+                bookFields.style.display = 'block';
+            } else if (selectedType === 'Magazine') {
+                magazineFields.style.display = 'block';
+            } else if (selectedType === 'CD' || selectedType === 'DVD') {
+                mediaFields.style.display = 'block';
+            }
+        }
+
+        typeSelect.addEventListener('change', updateFields);
+    });
+</script>
+</body>
+</html>

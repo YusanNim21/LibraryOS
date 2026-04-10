@@ -1,0 +1,11 @@
+# Ignore Python cache files
+__pycache__/
+*.pyc
+
+# Ignore the local database (users will generate their own when they run the app)
+*.db
+*.sqlite3
+
+# Ignore virtual environments
+venv/
+.venv/

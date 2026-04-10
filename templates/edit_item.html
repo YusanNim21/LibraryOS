@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Edit Item | LibraryOS</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body class="bg-light">
+<div class="container mt-5" style="max-width: 600px;">
+    <h2>Edit Library Item</h2>
+    
+    <form method="POST" class="card p-4 shadow-sm mt-3">
+        <div class="mb-3">
+            <label>Item Type</label>
+            <select name="item_type" id="itemTypeSelect" class="form-select" required>
+                <option value="Book" {% if item['item_type'] == 'Book' %}selected{% endif %}>Book</option>
+                <option value="Magazine" {% if item['item_type'] == 'Magazine' %}selected{% endif %}>Magazine</option>
+                <option value="CD" {% if item['item_type'] == 'CD' %}selected{% endif %}>CD</option>
+                <option value="DVD" {% if item['item_type'] == 'DVD' %}selected{% endif %}>DVD</option>
+            </select>
+        </div>
+
+        <div class="mb-3"><label>Item ID</label><input type="text" name="item_id" class="form-control" value="{{ item['item_id'] }}" readonly></div>
+        <div class="mb-3"><label>Title</label><input type="text" name="title" class="form-control" value="{{ item['title'] }}" required></div>
+        <div class="mb-3"><label>Subject</label><input type="text" name="subject" class="form-control" value="{{ item['subject'] }}" required></div>
+        
+        <div class="row">
+            <div class="col"><label>Price (LKR)</label><input type="number" step="0.01" name="rental_price" class="form-control" value="{{ item['rental_price'] }}" required></div>
+            <div class="col"><label>Copies</label><input type="number" name="copies" class="form-control" value="{{ item['copies'] }}" required></div>
+        </div>
+
+        <hr class="my-4">
+        
+        <div id="book-fields" class="dynamic-section">
+            <h6 class="text-primary mb-3">Book Details</h6>
+            <div class="mb-3"><label>Author</label><input type="text" name="author" class="form-control" value="{{ item['author'] or '' }}"></div>
+            <div class="mb-3">
+                <label class="form-label d-block text-muted">Format</label>
+                <div class="form-check form-check-inline">
+                    <input class="form-check-input" type="radio" name="book_format" id="formatHardcover" value="Hardcover" {% if item['book_format'] == 'Hardcover' or not item['book_format'] %}checked{% endif %}>
+                    <label class="form-check-label" for="formatHardcover">Hardcover</label>
+                </div>
+                <div class="form-check form-check-inline">
+                    <input class="form-check-input" type="radio" name="book_format" id="formatPaperback" value="Paperback" {% if item['book_format'] == 'Paperback' %}checked{% endif %}>
+                    <label class="form-check-label" for="formatPaperback">Paperback</label>
+                </div>
+            </div>
+        </div>
+
+        <div id="magazine-fields" class="dynamic-section" style="display: none;">
+            <h6 class="text-warning mb-3">Magazine Details</h6>
+            <div class="mb-3">
+                <label class="form-label d-block text-muted">Magazine Print</label>
+                <div class="form-check form-check-inline">
+                    <input class="form-check-input" type="radio" name="color" id="colorYes" value="Full Color" {% if item['magazine_color'] == 'Full Color' or not item['magazine_color'] %}checked{% endif %}>
+                    <label class="form-check-label" for="colorYes">Full Color</label>
+                </div>
+                <div class="form-check form-check-inline">
+                    <input class="form-check-input" type="radio" name="color" id="colorNo" value="Black & White" {% if item['magazine_color'] == 'Black & White' %}checked{% endif %}>
+                    <label class="form-check-label" for="colorNo">Black & White</label>
+                </div>
+            </div>
+        </div>
+
+        <div id="media-fields" class="dynamic-section" style="display: none;">
+            <h6 class="text-info mb-3">Media Details</h6>
+            <div class="mb-3"><label>Release Year</label><input type="number" name="release_year" class="form-control" value="{{ item['release_year'] or '' }}"></div>
+        </div>
+
+        <button type="submit" class="btn btn-primary mt-4">Update Item</button>
+        <a href="{{ url_for('index') }}" class="btn btn-secondary mt-4 ms-2">Cancel</a>
+    </form>
+</div>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const typeSelect = document.getElementById('itemTypeSelect');
+        const bookFields = document.getElementById('book-fields');
+        const magazineFields = document.getElementById('magazine-fields');
+        const mediaFields = document.getElementById('media-fields');
+
+        function updateFields() {
+            bookFields.style.display = 'none';
+            magazineFields.style.display = 'none';
+            mediaFields.style.display = 'none';
+
+            const selectedType = typeSelect.value;
+            if (selectedType === 'Book') {
+                bookFields.style.display = 'block';
+            } else if (selectedType === 'Magazine') {
+                magazineFields.style.display = 'block';
+            } else if (selectedType === 'CD' || selectedType === 'DVD') {
+                mediaFields.style.display = 'block';
+            }
+        }
+
+        typeSelect.addEventListener('change', updateFields);
+        // Run once on load to show the correct fields for the existing item
+        updateFields();
+    });
+</script>
+</body>
+</html>
