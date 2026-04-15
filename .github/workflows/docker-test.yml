@@ -1,0 +1,26 @@
+name: Docker CI Pipeline
+
+# 1. Run script on push or pull request to main branch
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+
+jobs:
+  test-build:
+    # 2. Specify ubuntu as the environment to run the script
+    runs-on: ubuntu-latest
+
+    steps:
+    # 3. Download the repository code to temp directory
+    - name: Checkout Repository
+      uses: actions/checkout@v4
+
+    # 4. Try to build the Docker image
+    - name: Test Docker Build
+      run: docker build -t library-test-image .
+      
+    # 5. Verify the image actually exists
+    - name: Verify Image
+      run: docker images
