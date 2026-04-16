@@ -26,5 +26,5 @@ The easiest way to run LibraryOS is via Docker. Ensure you have [Docker Desktop]
 
 1. **Clone the repository:**
    ```bash
-   git clone [https://github.com/YusanNim21/LibraryOS.git](https://github.com/YusanNim21/LibraryOS.git)
+   git clone https://github.com/YusanNim21/LibraryOS.git
    cd LibraryOS
